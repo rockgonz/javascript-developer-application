@@ -36,6 +36,21 @@
         $.getJSON("https://coauth.com/test.json", function (data) {
           $("#accordion").empty(); // Clear previous content
           $.each(data, function (key, value) {
+
+            var content = '';
+            if (typeof value === 'object') {
+                //content = JSON.stringify(value); // Convert object to JSON string
+                content += '<ul>';
+                for (var prop in value) {
+                    if (value.hasOwnProperty(prop)) {
+                        content += `<li>${prop}: ${value[prop]}</li>`;
+                    }
+                }
+                content += '</ul>';
+            } else {
+                content = value;
+            }
+
             var accordionItem = `
               <div class="accordion-item card">
 				<div class="card-header">
@@ -47,7 +62,7 @@
 				</div>
                 <div id="collapse${key}" class="accordion-collapse collapse card-body" aria-labelledby="heading${key}" data-bs-parent="#accordion">
                   <div class="accordion-body">
-                    ${value}
+                    ${content}
                   </div>
                 </div>
               </div>`;
